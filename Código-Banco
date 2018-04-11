@@ -1,0 +1,107 @@
+
+
+CREATE TABLE Administrador (
+razao_social varchar(50),
+cnpj varchar(18),
+idUsuarios varchar(30)
+);
+
+CREATE TABLE FormaPagamento (
+descricao varchar(200),
+idFormaPagamento varchar(30) PRIMARY KEY
+);
+
+CREATE TABLE Clienteloja (
+nomeFantasia varchar(77),
+cnpj varchar(18),
+email varchar(50),
+razao_social varchar(60),
+telefone varchar(15),
+idCliente varchar(30) PRIMARY KEY
+);
+
+CREATE TABLE Vendedor (
+cpf varchar(14),
+idUsuarios varchar(30)
+);
+
+CREATE TABLE Cor (
+idCor varchar(30) PRIMARY KEY,
+cor varchar(40)
+);
+
+CREATE TABLE pedido (
+dataHora varchar(15),
+idPedido varchar(30) PRIMARY KEY,
+idCliente varchar(30),
+idFormaPagamento varchar(30),
+FOREIGN KEY(idCliente) REFERENCES Clienteloja (idCliente),
+FOREIGN KEY(idFormaPagamento) REFERENCES FormaPagamento (idFormaPagamento)
+);
+
+CREATE TABLE h (
+idStatusVenda varchar(30),
+idPedido varchar(30),
+data_hora varchar(15),
+FOREIGN KEY(idPedido) REFERENCES pedido (idPedido)
+);
+
+CREATE TABLE StatusVenda (
+descricao varchar(200),
+idStatusVenda varchar(30) PRIMARY KEY
+);
+
+CREATE TABLE TipoProduto (
+idTipoProduto varchar(30) PRIMARY KEY,
+tipo varchar(30)
+);
+
+CREATE TABLE Relação_VendasProduto (
+idProdutos varchar(30),
+idPedido varchar(30),
+preco_negociado varchar(20),
+quantidade int,
+FOREIGN KEY(idPedido) REFERENCES pedido (idPedido)
+);
+
+CREATE TABLE Usuarios (
+idUsuarios varchar(30) PRIMARY KEY,
+telefone varchar(11),
+email varchar(50),
+senha varchar(20),
+nome varchar(60)
+);
+
+CREATE TABLE prod_tamanho (
+idTamanho varchar(30),
+idProdutos varchar(30)
+);
+
+CREATE TABLE Tamanho (
+idTamanho varchar(30) PRIMARY KEY,
+tamanho varchar(40)
+);
+
+CREATE TABLE prod_cor (
+idCor varchar(30),
+idProdutos varchar(30),
+FOREIGN KEY(idCor) REFERENCES Cor (idCor)
+);
+
+CREATE TABLE Produtos (
+idProdutos varchar(30) PRIMARY KEY,
+preco varchar(20),
+estoque_min int,
+descricao varchar(200),
+estoque int,
+idTipoProduto varchar(30),
+FOREIGN KEY(idTipoProduto) REFERENCES TipoProduto (idTipoProduto)
+);
+
+ALTER TABLE Administrador ADD FOREIGN KEY(idUsuarios) REFERENCES Usuarios (idUsuarios);
+ALTER TABLE Vendedor ADD FOREIGN KEY(idUsuarios) REFERENCES Usuarios (idUsuarios);
+ALTER TABLE h ADD FOREIGN KEY(idStatusVenda) REFERENCES StatusVenda (idStatusVenda);
+ALTER TABLE Relação_VendasProduto ADD FOREIGN KEY(idProdutos) REFERENCES Produtos (idProdutos);
+ALTER TABLE prod_tamanho ADD FOREIGN KEY(idTamanho) REFERENCES Tamanho (idTamanho);
+ALTER TABLE prod_tamanho ADD FOREIGN KEY(idProdutos) REFERENCES Produtos (idProdutos);
+ALTER TABLE prod_cor ADD FOREIGN KEY(idProdutos) REFERENCES Produtos (idProdutos);
